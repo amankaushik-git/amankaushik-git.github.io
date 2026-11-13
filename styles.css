@@ -844,4 +844,4 @@ html { scroll-behavior: smooth; }
       .hero2 .name { font-size: 42px; }
       .spida-bar #spidaStatus { white-space: normal; }
     }
-  
+  @media (max-width: 960px) { .hero2 .spida { width: 100%; max-width: 560px; } }
