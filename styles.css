@@ -797,3 +797,51 @@ html { scroll-behavior: smooth; }
 .sc-thumb.proof .watch { top: 10px; bottom: auto; }
 .sc-thumb.proof .watch { display: none; }
 .wl { white-space: pre; text-align: center; line-height: 1.25; }
+
+/* ---------- Hero v5: two columns + SpidAMAN night patrol ---------- */
+
+    /* ---------- Prototype: two equal columns ---------- */
+    .hero2 { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; padding-top: 56px; padding-bottom: 40px; }
+    .hero2 .left { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+    .hero2 .who { display: flex; align-items: center; gap: 22px; }
+    .hero2 .avatar { width: 120px; height: 120px; border-width: 5px; flex: none; }
+    .hero2 .name { font-size: 52px; line-height: 1; margin: 0; white-space: nowrap; }
+    .hero2 .role { margin: 8px 0 8px; }
+    .hero2 .headline { font-size: clamp(30px, 3.3vw, 46px); line-height: 1.08; margin: 0; }
+    .hero2 .lede { margin: 0; font-size: 16.5px; }
+    .hero2 .eyebrow { margin: 0 0 -8px; }
+    .worked-row { padding-top: 8px; padding-bottom: 56px; }
+    .worked-row .co-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    /* ---------- The SpidAMAN panel (2D pixel) ---------- */
+    .spida { position: relative; border-radius: 18px; overflow: hidden; border: 1px solid #2c2552; background: #1f1a3f; box-shadow: 4px 4px 0 rgba(27, 26, 23, .1); }
+    .spida-stage { position: relative; aspect-ratio: 1 / 1; }
+    .spida-stage canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; image-rendering: crisp-edges; }
+    .spida-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .spida-labels > div { position: absolute; left: 0; top: 0; will-change: transform; }
+    .spida-top { position: absolute; left: 12px; top: 10px; font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: rgba(255, 240, 220, .7); }
+    .spida-bar { position: absolute; left: 12px; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 10px;
+      background: rgba(13, 13, 26, .82); border: 1px solid rgba(255, 255, 255, .14); border-radius: 10px; padding: 8px 12px; color: #f3efe4; }
+    .spida-bar .who-tag { font: 600 12px var(--mono); color: #ff5c5c; white-space: nowrap; }
+    .spida-bar .who-tag i { font-style: normal; color: #7aa2ff; }
+    .spida-bar #spidaStatus { font: 500 12.5px var(--mono); color: #f3efe4; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .px-sign { font: 600 clamp(7px, 1.05vw, 10.5px) var(--mono); letter-spacing: .08em; color: var(--neon); white-space: nowrap;
+      text-shadow: 0 0 4px var(--neon), 0 0 10px var(--neon); transform-origin: center; }
+    .px-tag { font: 700 clamp(8px, 1.1vw, 11px) var(--mono); color: #fff; background: #c0262d; border: 2px solid #0d0d12; padding: 1px 6px; white-space: nowrap; box-shadow: 2px 2px 0 #0d0d12; }
+    .px-burst { font: 900 clamp(13px, 1.9vw, 20px)/1 var(--sans); color: #ffe14d; letter-spacing: .02em; white-space: nowrap;
+      -webkit-text-stroke: 2px #0d0d12; paint-order: stroke fill; text-shadow: 3px 3px 0 #0d0d12; rotate: -8deg; }
+    .px-card { background: #fbf8ef; border: 2px solid #0d0d12; box-shadow: 3px 3px 0 #0d0d12; padding: 5px 9px; white-space: nowrap; text-align: center; }
+    .px-card b { display: block; font: 700 clamp(9px, 1.15vw, 12px) var(--sans); color: #1d6b45; }
+    .px-card span { display: block; font: 600 clamp(9px, 1.15vw, 12.5px) var(--mono); color: #0d0d12; }
+
+    @media (max-width: 960px) {
+      .hero2 { grid-template-columns: 1fr; gap: 32px; }
+      .worked-row .co-list { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .hero2 .who { flex-direction: column; align-items: flex-start; }
+      .hero2 .name { font-size: 42px; }
+      .spida-bar #spidaStatus { white-space: normal; }
+    }
+  
