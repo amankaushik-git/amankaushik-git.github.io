@@ -36,18 +36,18 @@ window.FLOWS = {
     { t: "Score against my ICP", d: "An ICP I wrote for myself: stage, team size, the tools they run.", tools: ["clay"], drop: "Roles that don't fit" },
     { t: "Find the hiring manager", d: "The person the role reports to, not the recruiter.", tools: ["clay", "linkedin"] },
     { t: "Write the angle", d: "Per role: a résumé hook, a DM and a cover-letter angle built from their own post.", tools: ["openai"] },
-    { t: "Reach out", d: "Direct to the hiring manager, with a reason to reply.", tools: ["linkedin"], n: "13% reply rate" }
+    { t: "Reach out", d: "Direct to the hiring manager, with a reason to reply.", tools: ["linkedin"], n: "140 sends → 2 interviews + 1 referral · 9% replies" }
   ],
 
   "clay-partners": [
-    { t: "Scrape the directory", d: "Every agency in a GTM tool's partner directory, into a sheet.", tools: ["clay"], n: "171 agencies" },
-    { t: "Clean domain + name", d: "Visit each partner's site for a clean domain and company name.", tools: ["clay"] },
-    { t: "Keep real agencies", d: "AI reads each site.", tools: ["clay", "openai"], drop: "Solo consultants, personal brands" },
-    { t: "Find decision-makers", d: "Founders, CEOs, revenue leaders, with titles and LinkedIn URLs.", tools: ["clay", "linkedin"] },
-    { t: "Verify emails", d: "Find, then confirm it's deliverable.", tools: ["prospeo", "icypeas", "debounce"] },
-    { t: "Scrape their posts", d: "A Claude Code scraper, given the API docs, key, examples and hiring keywords. Last 30 days, one row per post.", tools: ["claude", "linkedin"] },
+    { t: "Scrape the directory", d: "Every agency in Clay's partner directory, pulled into a sheet with Instant Data Scraper.", tools: ["ids"], n: "171 agencies" },
+    { t: "Keep the Claygencies", d: "The export qualified in Clay: clean domain and name, outbound-focused Clay agencies only.", tools: ["clay", "openai"], drop: "Solo consultants, personal brands" },
+    { t: "Find the right people", d: "Founders, CEOs and revenue leaders, with their LinkedIn profiles.", tools: ["clay", "linkedin"] },
+    { t: "Into Claude Code", d: "Wired up a B2B enrichment API: docs, key and examples, so Claude can read LinkedIn posts.", tools: ["claude"] },
+    { t: "Train on sample posts", d: "Showed Claude real hiring posts, then built keyword filters for targeted coverage.", tools: ["claude"] },
+    { t: "Scrape 30 days of posts", d: "Every matching post from the people list in the last 30 days, one row per post.", tools: ["claude", "linkedin"] },
     { t: "Qualify the posts", d: "AI checks three things: hiring now, the role is GTM, the fit.", tools: ["clay", "openai"], drop: "Commentary, hiring tips, interview advice" },
-    { t: "Reach out", d: "Only to people who said publicly they're hiring.", tools: ["linkedin"], n: "Every email has a dated reason" }
+    { t: "Reach out", d: "LinkedIn DMs, or a direct application, to people who just said they're hiring.", tools: ["linkedin"], n: "Every message has a dated reason" }
   ],
 
   "directories": [
@@ -65,14 +65,14 @@ window.FLOWS = {
   ],
 
   "dental": [
-    { t: "Counties to coordinates", d: "10 counties, PIN codes turned into latitude and longitude for location searches.", tools: ["gmaps"] },
-    { t: "Scrape Google Maps", d: "3–5 pages per area, with a stop rule once an area runs dry to save cost.", tools: ["serper"] },
-    { t: "Check the domain", d: "Resolves, isn't a free subdomain, and the address in the footer matches Maps. No domain? A search fallback finds one.", tools: ["clay"], drop: "404s, free sites, mismatched addresses" },
-    { t: "Drop the noise", d: "The ICP is independent clinics, not the dental industry.", tools: ["clay"], drop: "Chains (DSOs), listing sites, suppliers" },
-    { t: "AI pass 1: real domain", d: "The root domain, not a Facebook page or a third-party URL.", tools: ["clay"] },
-    { t: "AI pass 2: real practice", d: "Looks for a Doctors or Treatments page, the mark of a working clinic.", tools: ["clay"], drop: "Directories, shell sites" },
-    { t: "Find the clinic on LinkedIn", d: "Dental barely lives on LinkedIn, so a search fallback runs when the first provider misses.", tools: ["icypeas", "linkedin"] },
-    { t: "People table", d: "Owners and decision-makers at each clinic, ready for outreach.", tools: ["clay"] }
+    { t: "Cities to coordinates", d: "10 cities across different US counties. Their zip codes became latitude and longitude for location searches.", tools: ["gmaps"] },
+    { t: "Scrape Google Maps", d: "About 3 Maps pages per city through Serper, with a stop rule once an area runs dry to save cost.", tools: ["serper"], n: "224 rows" },
+    { t: "Check the domain", d: "The site resolves and isn't a free subdomain or a Facebook page. No domain? A Google search finds one.", tools: ["clay"], drop: "404s, free and social-only sites" },
+    { t: "Drop the noise", d: "Several ICP columns confirm it's a dental clinic, not the wider dental industry.", tools: ["clay"], drop: "DSOs, directories, manufacturers, suppliers" },
+    { t: "AI pass 1: real domain", d: "Claygent confirms the root domain, not a third-party URL.", tools: ["clay"] },
+    { t: "AI pass 2: real practice", d: "Claygent reads each site: name and address must match Maps, and Doctors, Treatments, Services or About pages prove a working clinic.", tools: ["clay"], drop: "Shell sites, mismatched addresses" },
+    { t: "Find the clinic on LinkedIn", d: "Icypeas finds verified LinkedIn pages. Dental barely lives on LinkedIn, so a Claygent Google search covers the misses.", tools: ["icypeas", "linkedin"] },
+    { t: "People table", d: "Owners and decision-makers at each verified clinic, with contacts, ready for outreach.", tools: ["clay", "icypeas"], n: "Independent clinics only" }
   ],
 
   "finance": [

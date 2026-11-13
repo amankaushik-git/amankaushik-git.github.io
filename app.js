@@ -79,31 +79,76 @@
     return f.map((s) => (s.par ? s.par.map((n) => n.t).join(" + ") : s.t));
   };
 
+  // card copy: earlier wording (quoted pain question + "who it finds"), with overrides from window.CARD
+  const cardTitle = (l) => ((window.CARD || {})[l.id] || {}).title || `“${l.pain}”`;
+  const cardDesc = (l) => ((window.CARD || {})[l.id] || {}).desc || l.title;
+
   function cardHtml(l) {
-    const n = LISTS.indexOf(l) + 1;
     const proof = !l.video && window.PROOF && window.PROOF[l.id];
     const thumb = proof
-      ? `<span class="sc-thumb proof"><img src="${proof.img}" alt="${esc(proof.alt)}" loading="lazy"><span class="watch">${esc(proof.label)}</span></span>`
-      : l.video ? (window.THUMBS[l.id]
-      ? `<span class="sc-thumb"><img src="${window.THUMBS[l.id]}" alt="" loading="lazy"><span class="play">▶</span><span class="watch">Walkthrough</span></span>`
-      : `<span class="sc-thumb ph"><img class="ph-logo" src="${logo(toolsOf(l)[0])}" alt=""><span class="play">▶</span><span class="watch">Walkthrough</span></span>`) : "";
-    const steps = stepTitles(l);
+      ? `<div class="pc-thumb"><img src="${proof.img}" alt="${esc(proof.alt)}" loading="lazy"></div>`
+      : window.THUMBS[l.id]
+        ? `<div class="pc-thumb"><img src="${window.THUMBS[l.id]}" alt="" loading="lazy"><span class="play">▶</span></div>`
+        : `<div class="pc-thumb"><div class="lv" data-live></div></div>`;
     return `
-      <article class="scard on${thumb ? " has-thumb" : ""}" data-id="${l.id}">
-        <div class="sc-main">
-          <div class="sc-meta"><span class="num">${String(n).padStart(2, "0")}</span><span class="tag">${esc(l.industries[0])}</span></div>
-          <h3>${esc(HEADS[l.id] || l.title)}</h3>
-          <p class="sc-sub">“${esc(l.pain)}”</p>
-          <p class="sc-icp"><span>Finds</span>${esc(l.title)}</p>
-          <ol class="sc-steps">${steps.slice(0, 6).map((s) => `<li>${esc(s)}</li>`).join("")}${steps.length > 6 ? `<li class="more">+${steps.length - 6}</li>` : ""}</ol>
-          <div class="sc-foot">
-            <div class="stat">${esc(l.stat)}</div>
-            <div class="logos">${toolsOf(l).slice(0, 7).map((t) => `<img src="${logo(t)}" alt="${esc(TOOLS[t])}" title="${esc(TOOLS[t])}">`).join("")}</div>
-          </div>
-          <button class="sc-open" type="button" data-open="${l.id}">See the workflow <span>→</span></button>
-        </div>
+      <article class="pcard" data-id="${l.id}">
         ${thumb}
+        <div class="pc-body">
+          <span class="pc-tag">${esc(l.industries[0])}</span>
+          <h3 class="pc-title">${esc(cardTitle(l))}</h3>
+          <p class="pc-desc">${esc(cardDesc(l))}</p>
+          ${l.stat ? `<p class="pc-stat">${esc(l.stat)}</p>` : ""}
+          <div class="pc-logos">${toolsOf(l).slice(0, 7).map((t) => `<img src="${logo(t)}" alt="${esc(TOOLS[t])}" title="${esc(TOOLS[t])}">`).join("")}</div>
+        </div>
+        <div class="pc-rule"></div>
+        <button class="pc-cta" type="button">See the workflow <span>→</span></button>
       </article>`;
+  }
+
+  // live workflow thumbnail for projects with no video or screenshot (drawn in a 320×180 box)
+  const LV_NODES = [
+    { x: 62, y: 60, logo: "crunchbase", b: "Funding", s: "Seed · $3.2M" },
+    { x: 160, y: 60, logo: "gmaps", b: "Office", s: "Reg. no. found" },
+    { x: 258, y: 60, logo: "linkedin", b: "Job posts", s: "“In office”" },
+    { x: 240, y: 132, logo: "openai", b: "Intent", s: "0/7" },
+    { x: 92, y: 132, logo: "clay", b: "Tier A", s: "3 buyers", win: true }
+  ];
+  const LV_PATH = "M62,60 L258,60 C306,60 306,132 240,132 L92,132";
+  function initLive(root) {
+    root.querySelectorAll("[data-live]").forEach((box) => {
+      box.innerHTML = `<svg viewBox="0 0 320 180" preserveAspectRatio="none" aria-hidden="true"><path class="lv-track" d="${LV_PATH}"/><path class="lv-lit" d="${LV_PATH}"/><circle class="lv-dot" r="4.5"/></svg>
+        <span class="lv-label"><i></i>Live workflow</span>` +
+        LV_NODES.map((n) => `<div class="lv-node" style="left:${(n.x / 320) * 100}%;top:${(n.y / 180) * 100}%"><img src="${logo(n.logo)}" alt=""><span><b>${n.b}</b><small>${n.s}</small></span>${n.win ? '<span class="lv-avs"><span></span><span></span><span></span></span>' : ""}</div>`).join("");
+      const lit = box.querySelector(".lv-lit"), dot = box.querySelector(".lv-dot");
+      const nodes = [...box.querySelectorAll(".lv-node")], counter = nodes[3].querySelector("small");
+      const L = lit.getTotalLength(), CYCLE = 6.4, TRAVEL = 4.2;
+      lit.style.strokeDasharray = L;
+      const at = LV_NODES.map((n) => {
+        let best = 0, bd = 1e9;
+        for (let i = 0; i <= 200; i++) { const p = lit.getPointAtLength((L * i) / 200); const d = (p.x - n.x) ** 2 + (p.y - n.y) ** 2; if (d < bd) { bd = d; best = i / 200; } }
+        return best;
+      });
+      const ease = (t) => 0.5 - Math.cos(Math.PI * t) / 2;
+      const tIntent = TRAVEL * (Math.acos(1 - 2 * at[3]) / Math.PI);
+      function paint(t) {
+        const e = ease(Math.min(1, t / TRAVEL)), p = lit.getPointAtLength(L * e);
+        dot.setAttribute("cx", p.x); dot.setAttribute("cy", p.y);
+        dot.style.opacity = t > CYCLE - 0.5 ? String(Math.max(0, (CYCLE - t) / 0.5)) : "1";
+        lit.style.strokeDashoffset = L * (1 - e);
+        nodes.forEach((el, i) => el.classList.toggle("on", e >= at[i] - 0.005 && i < nodes.length - 1));
+        nodes[nodes.length - 1].classList.toggle("win", e >= 0.999 && t < CYCLE - 0.35);
+        counter.textContent = t < tIntent ? "0/7" : `${Math.min(6, Math.floor((t - tIntent) * 14))}/7`;
+      }
+      if (reduce) { paint(TRAVEL + 0.5); return; }
+      let vis = true;
+      const t0 = performance.now();
+      new IntersectionObserver(([en]) => (vis = en.isIntersecting)).observe(box);
+      (function loop(now) {
+        if (!box.isConnected) return;
+        if (vis) paint(((now - t0) / 1000) % CYCLE);
+        requestAnimationFrame(loop);
+      })(t0);
+    });
   }
 
   let pos = 0, paused = false, holdUntil = 0, looping = false, visibleOnScreen = true;
@@ -113,7 +158,8 @@
     const html = items.map(cardHtml).join("");
     track.innerHTML = looping ? html + html : html;
     track.classList.toggle("static", !looping);
-    if (looping) track.querySelectorAll(".scard").forEach((c, i) => { if (i >= items.length) { c.setAttribute("aria-hidden", "true"); c.querySelector(".sc-open").tabIndex = -1; } });
+    if (looping) track.querySelectorAll(".pcard").forEach((c, i) => { if (i >= items.length) { c.setAttribute("aria-hidden", "true"); c.querySelector(".pc-cta").tabIndex = -1; } });
+    initLive(track);
     pos = 0; track.scrollLeft = 0;
   }
   const half = () => track.scrollWidth / 2;
@@ -139,7 +185,7 @@
   }, { passive: true });
   new IntersectionObserver(([e]) => (visibleOnScreen = e.isIntersecting)).observe(track);
   function nudge(dir) {
-    const c = track.querySelector(".scard");
+    const c = track.querySelector(".pcard");
     const w = c ? c.getBoundingClientRect().width + 20 : 520;
     holdUntil = performance.now() + 2500;
     if (looping && dir < 0 && track.scrollLeft < w) track.scrollLeft += half();
@@ -151,7 +197,7 @@
     if (e.key === "ArrowRight") { e.preventDefault(); nudge(1); }
     if (e.key === "ArrowLeft") { e.preventDefault(); nudge(-1); }
   });
-  track.addEventListener("click", (e) => { const c = e.target.closest(".scard"); if (c) open(c.dataset.id); });
+  track.addEventListener("click", (e) => { const c = e.target.closest(".pcard"); if (c) open(c.dataset.id); });
 
   // ---------- Workflow flowchart (inside the detail sheet) ----------
   const toolImgs = (ts) => ts.filter((t) => TOOLS[t]).map((t) => `<img src="${logo(t)}" alt="" title="${esc(TOOLS[t])}">`).join("");
@@ -191,8 +237,8 @@
     if (!l) return;
     $("sheet-body").innerHTML = `
       <p class="eyebrow">${l.industries.map(esc).join(" · ")} · Built in ${esc(l.built.join(" + "))}</p>
-      <h2 class="sheet-head" id="sheet-title">${esc(HEADS[l.id] || l.title)}</h2>
-      <p class="sheet-sub">“${esc(l.pain)}”</p>
+      <h2 class="sheet-head" id="sheet-title">${esc(cardTitle(l))}</h2>
+      <p class="sheet-sub">${esc(cardTitle(l).startsWith("“") ? (HEADS[l.id] || "") : `“${l.pain}”`)}</p>
       <p class="sc-icp"><span>Finds</span>${esc(l.title)}</p>
 
       ${l.video ? `
