@@ -167,7 +167,7 @@ window.LISTS = [
 // Walkthrough videos (Google Drive file IDs), embedded in each story sheet.
 window.VIDEOS = {
   "job-intel": "1X-MU_WLeT31ur8BXqoB_wl_zHgM7ucdr",
-  "dental": "1ZAaEJBeTQiDTSYZszXKjdHPUmwMB9pJV",
+  "dental": "1n8Y9NBOGMJJdImz0R5EnRgyjJzqk9jWB",
   "directories": "10zlBisbhP-Z0uQp1Wq_ee8-yqChSEvcZ",
   "clay-partners": "1pIbry-SQ_qKdKp0Tt0yJBW8dVf7f5DNX",
   "spend-recovery": "1qmDChzuwnHT3grV222_F_Yi7-Qn880eQ",
@@ -178,7 +178,7 @@ window.LISTS.forEach((l) => { if (window.VIDEOS[l.id]) l.video = window.VIDEOS[l
 // Card thumbnails, saved locally from each Drive video. Cards with a video but no thumbnail get a placeholder.
 window.THUMBS = {
   "job-intel": "assets/thumbs/job-intel.jpg",
-  "dental": "assets/thumbs/dental.jpg",
+  "dental": "assets/thumbs/dental-v2.jpg",
   "directories": "assets/thumbs/directories-v2.jpg",
   "clay-partners": "assets/thumbs/clay-partners.jpg",
   "spend-recovery": "assets/thumbs/spend-recovery-v2.jpg",
