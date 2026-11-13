@@ -924,3 +924,146 @@ html { scroll-behavior: smooth; }
   .rtrack .pcard:hover::before, .rtrack .pcard:focus-within::before { opacity: 1; animation: race 2.4s linear infinite; }
   @media (prefers-reduced-motion: reduce) { .rtrack .pcard:hover::before { animation: none; background: var(--accent); } }
   @media (max-width: 640px) { .rtrack .pcard { --w: 82vw; } }
+
+/* ========== Projects band (Sage): fades in/out with scroll, glowing cards, Light/Dark switch ========== */
+/* Layout preview: a Projects band that fades in as you arrive and fades out as you leave.
+   --p (0 → 1) is set from scroll position; everything in the band blends with it. */
+
+/* ---------- Tones ---------- */
+#lists.band-dark {
+  --p: 0;
+  --mix: calc(var(--p) * 100%);
+  --glow-rgb: 94, 224, 183;
+  position: relative; isolation: isolate;
+  padding: 120px 0 110px;
+}
+#lists.band-dark[data-tone="sage"] {
+  --band-bg: #dfe7dc; --band-glow-a: rgba(47, 93, 70, .10); --band-glow-b: rgba(47, 93, 70, .14);
+  --band-ink: #1b1a17; --band-muted: #56625a; --band-accent: #2f5d46; --net: rgba(47, 93, 70, .08);
+  --chip-bg: rgba(255, 255, 255, .7); --chip-line: rgba(47, 93, 70, .2);
+}
+
+/* ---------- Background + net, both faded by --p, with soft top and bottom edges ---------- */
+#lists.band-dark::after, #lists.band-dark::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: calc(var(--p) * 1.35);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 120px, #000 calc(100% - 110px), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 120px, #000 calc(100% - 110px), transparent 100%);
+}
+#lists.band-dark::after {
+  z-index: -2;
+  background:
+    radial-gradient(900px 420px at 88% 10%, var(--band-glow-a), transparent 60%),
+    radial-gradient(760px 380px at 4% 92%, var(--band-glow-b), transparent 62%),
+    var(--band-bg);
+}
+#lists.band-dark::before {
+  z-index: -1;
+  background-image: linear-gradient(var(--net) 1px, transparent 1px), linear-gradient(90deg, var(--net) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ---------- Text and controls: page colours until the band is mostly in, then a quick switch ---------- */
+#lists.band-dark .eyebrow, #lists.band-dark h2, #lists.band-dark .chip, #lists.band-dark .arrow, .card-mode, .card-mode button {
+  transition: color .4s ease, background-color .4s ease, border-color .4s ease, box-shadow .2s, transform .2s;
+}
+#lists.band-dark .chip, #lists.band-dark .arrow, .card-mode {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 6px 16px -10px rgba(0, 0, 0, .35);
+}
+#lists.band-dark.band-on .eyebrow { color: var(--band-accent); }
+#lists.band-dark.band-on h2 { color: var(--band-ink); }
+#lists.band-dark.band-on .chip, #lists.band-dark.band-on .arrow, #lists.band-dark.band-on .card-mode {
+  color: var(--band-ink); background: var(--chip-bg); border-color: var(--chip-line);
+}
+#lists.band-dark.band-on .chip[aria-pressed="true"] { background: var(--band-ink); color: var(--band-bg); border-color: transparent; }
+#lists.band-dark .chip:hover, #lists.band-dark .arrow:hover {
+  transform: translateY(-1px); border-color: rgba(var(--glow-rgb), .55);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), 0 0 18px -4px rgba(var(--glow-rgb), .5);
+}
+#lists.band-dark .chip[aria-pressed="true"] { box-shadow: 0 0 22px -6px rgba(var(--glow-rgb), .55); }
+#lists.band-dark .chip .n { opacity: .6; }
+
+/* ---------- Cards: raised bubbles that glow, with a net under the cursor ---------- */
+#lists.band-dark .pcard {
+  color: var(--ink);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .06) inset, 0 14px 30px -18px rgba(0, 0, 0, .55);
+  transition: transform .3s cubic-bezier(.2, .7, .2, 1), box-shadow .3s, border-color .3s;
+}
+#lists.band-dark .pcard > * { position: relative; z-index: 1; }
+#lists.band-dark .pcard::after {
+  content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: inherit; opacity: 0; transition: opacity .3s;
+  background:
+    radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(var(--glow-rgb), .16), transparent 60%),
+    linear-gradient(rgba(47, 93, 70, .16) 1px, transparent 1px) 0 0 / 14px 14px,
+    linear-gradient(90deg, rgba(47, 93, 70, .16) 1px, transparent 1px) 0 0 / 14px 14px;
+  -webkit-mask-image: radial-gradient(200px circle at var(--mx, 50%) var(--my, 50%), #000 0%, transparent 75%);
+  mask-image: radial-gradient(200px circle at var(--mx, 50%) var(--my, 50%), #000 0%, transparent 75%);
+  mix-blend-mode: multiply;
+}
+#lists.band-dark .pcard:hover {
+  transform: translateY(-8px);
+  border-color: rgba(var(--glow-rgb), .55);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .08) inset, 0 28px 60px -22px rgba(0, 0, 0, .6), 0 0 46px -10px rgba(var(--glow-rgb), .5);
+}
+#lists.band-dark .pcard:hover::after { opacity: 1; }
+#lists.band-dark .pc-logos img { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8), 0 3px 8px -5px rgba(0, 0, 0, .4); transition: transform .2s; }
+#lists.band-dark .pcard:hover .pc-logos img { transform: translateY(-1px); }
+
+/* ---------- Dark cards (visitor's choice) ---------- */
+#lists.band-dark.dark-cards .pcard { background: #1f2c25; border-color: rgba(255, 255, 255, .08); }
+#lists.band-dark.dark-cards .pc-thumb { background: #18231d; border-bottom-color: rgba(255, 255, 255, .08); }
+#lists.band-dark.dark-cards .pc-tag { color: #7fd6b0; background: rgba(var(--glow-rgb), .12); }
+#lists.band-dark.dark-cards .pc-title { color: #eef3ef; }
+#lists.band-dark.dark-cards .pc-desc { color: #a7b8ad; }
+#lists.band-dark.dark-cards .pc-stat { color: #8fe3bf; border-left-color: #5ee0b7; }
+#lists.band-dark.dark-cards .pc-rule { background: rgba(255, 255, 255, .1); }
+#lists.band-dark.dark-cards .pc-cta { background: #eef3ef; color: #16211b; }
+#lists.band-dark.dark-cards .pc-cta:hover { background: #5ee0b7; }
+#lists.band-dark.dark-cards .pcard::after {
+  background:
+    radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(var(--glow-rgb), .14), transparent 60%),
+    linear-gradient(rgba(var(--glow-rgb), .12) 1px, transparent 1px) 0 0 / 14px 14px,
+    linear-gradient(90deg, rgba(var(--glow-rgb), .12) 1px, transparent 1px) 0 0 / 14px 14px;
+  mix-blend-mode: screen;
+}
+
+/* ---------- Tighter rhythm around "Worked with" ---------- */
+section.hero2.wrap { padding-bottom: 40px; }
+section.worked-row.wrap { padding-top: 16px; padding-bottom: 8px; }
+section#stack.flowsec.wrap { padding-top: 72px; }
+
+/* ---------- Phones ---------- */
+@media (max-width: 760px) {
+  #lists .head-row { flex-wrap: wrap; align-items: flex-start; gap: 14px; }
+  #lists .head-row > div:first-child { flex: 1 1 100%; }
+  #lists .carousel-controls { width: 100%; }
+  #lists .carousel-controls .card-mode { margin-right: auto; }
+}
+@media (max-width: 640px) {
+  #lists.band-dark { padding: 100px 0 90px; }
+  #lists.band-dark::after, #lists.band-dark::before {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 90px, #000 calc(100% - 90px), transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 90px, #000 calc(100% - 90px), transparent 100%);
+  }
+  .card-mode button { padding: 6px 9px; }
+}
+@media (prefers-reduced-motion: reduce) { #lists.band-dark .pcard:hover { transform: none; } }
+
+/* ---------- Visitor-facing Light / Dark card switch ---------- */
+#lists .carousel-controls { display: flex; align-items: center; gap: 6px; }
+.card-mode { display: inline-flex; gap: 2px; padding: 3px; margin-right: 10px; border-radius: 999px;
+  color: var(--ink-2); background: var(--paper); border: 1px solid var(--line); }
+.card-mode button { display: inline-flex; align-items: center; gap: 6px; font: 500 12.5px var(--sans); color: inherit; opacity: .85; background: transparent; border: 0;
+  border-radius: 999px; padding: 6px 12px; cursor: pointer; transition: background-color .4s, color .4s, opacity .2s; }
+.card-mode button:hover { opacity: 1; }
+.card-mode button[aria-pressed="true"] { opacity: 1; background: var(--ink); color: var(--bg); box-shadow: 0 0 16px -4px rgba(var(--glow-rgb), .55); }
+#lists.band-on .card-mode button[aria-pressed="true"] { background: var(--band-ink); color: var(--band-bg); }
+.card-mode i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.card-mode .cm-sun { background: #f2c14e; box-shadow: 0 0 0 2px rgba(242, 193, 78, .25); }
+.card-mode .cm-moon { background: transparent; box-shadow: inset -3px -2px 0 0 currentColor, 0 0 0 1px currentColor; }
+@media (max-width: 760px) {
+  #lists .head-row { flex-wrap: wrap; align-items: flex-start; gap: 14px; }
+  #lists .head-row > div:first-child { flex: 1 1 100%; }
+  #lists .carousel-controls { width: 100%; }
+  #lists .carousel-controls .card-mode { margin-right: auto; }
+}
+@media (max-width: 640px) { .card-mode button { padding: 6px 9px; } }

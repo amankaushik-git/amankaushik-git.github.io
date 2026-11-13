@@ -402,7 +402,7 @@
       ["score", "Scored as a partner"], ["route", "Routed to the agency lane"], ["agency", "Pitched referral or white-label"]] }
   ];
   const CARDS = {
-    find: ["① Find", "Brand name → scored lead", [
+    find: ["Find", "Brand name → scored lead", [
       "Free checks first; paid lookups only once a brand qualifies.",
       "Scored into 5 tiers, each with its own offer."]],
     wa: ["WhatsApp", "First touch. Quietest inbox.", [
@@ -632,4 +632,51 @@
   const els = document.querySelectorAll("main section:not(.hero) > *, section.wa > *, section.system > *, section.lists > *, section.flowsec > *, section.contact > *");
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
   els.forEach((el, i) => { if (el.getBoundingClientRect().top > innerHeight * 0.9) { el.classList.add("rv"); el.style.transitionDelay = (i % 3) * 70 + "ms"; io.observe(el); } });
+})();
+
+// ---------- Projects band: card glow, Light/Dark switch, scroll fade ----------
+(function () {
+  // cursor-following glow + net on project cards
+  document.addEventListener("pointermove", (e) => {
+    const c = e.target.closest && e.target.closest("#lists .pcard");
+    if (!c) return;
+    const r = c.getBoundingClientRect();
+    c.style.setProperty("--mx", (e.clientX - r.left) + "px");
+    c.style.setProperty("--my", (e.clientY - r.top) + "px");
+  });
+
+  // Light / Dark cards, chosen by the visitor and remembered on this device
+  (function () {
+    const band = document.getElementById("lists");
+    const btns = [...document.querySelectorAll(".card-mode button")];
+    const set = (mode) => {
+      band.classList.toggle("dark-cards", mode === "dark");
+      btns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.cards === mode)));
+      try { localStorage.setItem("cardMode", mode); } catch (e) {}
+    };
+    let saved = "light";
+    try { saved = localStorage.getItem("cardMode") || "light"; } catch (e) {}
+    set(saved);
+    btns.forEach((b) => b.addEventListener("click", () => set(b.dataset.cards)));
+  })();
+
+  // the band fades in as you scroll into Projects and fades out as you leave (page colour never changes)
+  (function () {
+    const band = document.getElementById("lists");
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let ticking = false;
+    const ease = (t) => t * t * (3 - 2 * t);
+    function update() {
+      ticking = false;
+      const r = band.getBoundingClientRect(), vh = innerHeight;
+      const enter = (vh * 0.95 - r.top) / (vh * 0.55);        // 0 when the band peeks in, 1 once it's well in
+      const leave = (r.bottom - vh * 0.05) / (vh * 0.55);     // 1 while there's plenty left, 0 as it scrolls away
+      const p = reduce ? 1 : ease(Math.max(0, Math.min(1, enter, leave)));
+      band.style.setProperty("--p", p.toFixed(3));
+      band.classList.toggle("band-on", p >= 0.55);
+    }
+    addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    addEventListener("resize", update);
+    update();
+  })();
 })();

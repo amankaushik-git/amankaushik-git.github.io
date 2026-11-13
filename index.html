@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=60">
+  <link rel="stylesheet" href="styles.css?v=70">
 </head>
 <body>
 
@@ -17,8 +17,8 @@
     <a href="#top" class="mark">Aman Kaushik</a>
     <nav>
       <a href="#stack">Tech stack</a>
-      <a href="#system">Outbound system</a>
       <a href="#lists">Projects</a>
+      <a href="#system">Outbound system</a>
       <a href="#contact" class="nav-cta">Contact</a>
     </nav>
   </div>
@@ -73,7 +73,6 @@
               <div class="co-line"><b>Helium</b><time>Sep 2026 – now</time></div>
               <span class="co-role">GTM Engineer</span>
               <small>AI content marketing agency for e-commerce marketplaces and D2C brands.</small>
-              <p class="co-did">Built the lead engine and a WhatsApp-first outbound system across 3 channels: 50 bookings a month.</p>
             </div>
           </div>
           <div class="co-tile" tabindex="0">
@@ -82,7 +81,6 @@
               <div class="co-line"><b>JustCall</b><time>Jan – May 2026</time></div>
               <span class="co-role">Product Support Engineer</span>
               <small>SaaS Labs · AI voice and CRM automation for sales teams.</small>
-              <p class="co-did">Fixed AI voice agents, call routing and integrations across 6 CRMs; built prospect lists for demos.</p>
             </div>
           </div>
           <div class="co-tile" tabindex="0">
@@ -91,13 +89,11 @@
               <div class="co-line"><b>Fretron</b><time>Feb – Apr 2025</time></div>
               <span class="co-role">GTM Engineer Intern</span>
               <small>Cloud TMS for enterprise logistics.</small>
-              <p class="co-did">Mapped a 20,000-company TAM and ran 20+ persona-tested campaigns with automated SDR alerts.</p>
             </div>
           </div>
         </div>
       </div>
   </section>
-
 
   <!-- Tech stack -->
   <section class="flowsec wrap" id="stack">
@@ -114,6 +110,28 @@
         <div class="xp-status"><span class="led"></span><span id="ticker">scraping Google Maps for clinics…</span><span class="xp-status-r">5 stages · 1 system</span></div>
       </div>
     </div>
+  </section>
+
+  <!-- Lead list library -->
+  <section id="lists" class="lists band-dark" data-tone="sage">
+    <div class="wrap head-row">
+      <div>
+        <p class="eyebrow">Projects</p>
+        <h2>Every list starts with a problem.</h2>
+      </div>
+      <div class="carousel-controls">
+        <div class="card-mode" role="group" aria-label="Card style">
+          <button type="button" data-cards="light" aria-pressed="true"><i class="cm-sun"></i>Light</button>
+          <button type="button" data-cards="dark" aria-pressed="false"><i class="cm-moon"></i>Dark</button>
+        </div>
+        <button class="arrow" id="prev" aria-label="Previous">←</button>
+        <button class="arrow" id="next" aria-label="Next">→</button>
+      </div>
+    </div>
+    <div class="wrap filters" role="toolbar" aria-label="Filter lead lists">
+      <div class="chip-row" id="industry-filters"></div>
+    </div>
+    <div class="track rtrack" id="track" tabindex="0" aria-label="Lead lists. Hover to pause."></div>
   </section>
 
   <!-- WhatsApp: the channel I cracked -->
@@ -159,27 +177,6 @@
     <div class="infra-cards" id="infraCards"></div>
   </section>
 
-
-  <!-- Lead list library -->
-  <section id="lists" class="lists">
-    <div class="wrap head-row">
-      <div>
-        <p class="eyebrow">Projects</p>
-        <h2>Every list starts with a problem.</h2>
-      </div>
-      <div class="carousel-controls">
-        <button class="arrow" id="prev" aria-label="Previous">←</button>
-        <button class="arrow" id="next" aria-label="Next">→</button>
-      </div>
-    </div>
-    <div class="wrap filters" role="toolbar" aria-label="Filter lead lists">
-      <div class="chip-row" id="industry-filters"></div>
-    </div>
-    <div class="track rtrack" id="track" tabindex="0" aria-label="Lead lists. Hover to pause."></div>
-  </section>
-
-
-
   <!-- Contact -->
   <section id="contact" class="contact wrap">
     <h2>Got a market nobody has mapped yet?</h2>
@@ -205,7 +202,8 @@
 
 <script src="flows.js?v=60"></script>
 <script src="data.js?v=62"></script>
-<script src="app.js?v=60"></script>
+<script src="app.js?v=70"></script>
 <script src="spidaman.js?v=1"></script>
+
 </body>
 </html>
