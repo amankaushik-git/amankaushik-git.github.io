@@ -1067,3 +1067,136 @@ section#stack.flowsec.wrap { padding-top: 72px; }
   #lists .carousel-controls .card-mode { margin-right: auto; }
 }
 @media (max-width: 640px) { .card-mode button { padding: 6px 9px; } }
+
+/* ========== Sage palette + Projects as a rainforest-green scroll breaker ========== */
+/* ================= Sage palette, applied by role ================= */
+:root {
+  --sage-50: #f2f5f0; --sage-100: #e4ece2; --sage-200: #cfdccb; --sage-400: #a3b18a;
+  --sage-600: #5f7a63; --sage-700: #3d5f48; --forest-800: #183d2c; --forest-900: #13261c;
+  /* the site's own tokens, re-pointed at the palette */
+  --ink: #15261c;          /* headings: dark green-black, not pure black */
+  --ink-2: #3a4a40;        /* body text: warm grey-green */
+  --muted: #6a7a6e;
+  --line: #dfe6db;
+  --line-2: #c9d5c4;
+  --accent: #2f5d44;       /* labels, links, active states */
+  --accent-soft: var(--sage-100);
+}
+::selection { background: var(--sage-200); color: var(--forest-900); }
+:focus-visible { outline-color: var(--sage-600); }
+
+/* Nav */
+.nav nav a { color: var(--ink-2); position: relative; }
+.nav nav a:not(.nav-cta)::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px; border-radius: 2px; background: var(--sage-400); transform: scaleX(0); transition: transform .25s; }
+.nav nav a:not(.nav-cta):hover::after { transform: scaleX(1); }
+.nav-cta { border-color: var(--sage-200); transition: background .2s, border-color .2s; }
+.nav-cta:hover { background: var(--sage-100); border-color: var(--sage-400); }
+
+/* Hero */
+.typed, .rotator { color: var(--forest-800); }
+.dot { background: var(--sage-600); box-shadow: 0 0 0 4px var(--sage-100); }
+.soc { border-color: var(--sage-200); }
+.soc:hover { background: var(--sage-100); border-color: var(--sage-400); color: var(--forest-800); }
+.soc.on { background: var(--forest-800); border-color: var(--forest-800); }
+.spida { border-color: var(--sage-200); box-shadow: 0 18px 40px -26px rgba(24, 61, 44, .45); }
+
+/* Worked with */
+.co-tile { background: var(--sage-50); border-color: var(--sage-200); }
+.co-role { color: var(--sage-700); }
+
+/* Tech stack: soft sage backdrop behind the window */
+#stack .desk { box-shadow: 0 0 0 14px var(--sage-50), 0 0 0 15px var(--sage-200); border-radius: 18px; }
+
+/* The channel I cracked */
+.wa-stats { background: var(--sage-50); border-color: var(--sage-200); }
+.wa-stats > div + div { border-left-color: var(--sage-200); }
+.wa-stats strong { color: var(--forest-800); }
+.wa-main strong { color: var(--forest-800); }
+.wa-stats small { color: var(--sage-700); background: var(--sage-100); }
+
+/* Outbound system */
+.n8n { border-color: var(--sage-200); }
+.n8n-scroll { background-color: var(--sage-50); background-image: radial-gradient(var(--sage-200) 1px, transparent 1.2px); }
+.nd { border-color: var(--sage-200); }
+.nd.run { border-color: var(--forest-800); box-shadow: 0 0 0 3px var(--sage-100), 2px 2px 0 rgba(21, 38, 28, .07); }
+.wire-lit { stroke: var(--forest-800); }
+.lead-dot { background: var(--forest-800); box-shadow: 0 0 0 4px rgba(24, 61, 44, .2), 0 0 14px 2px rgba(24, 61, 44, .3); }
+.wl { background: var(--sage-50); }
+.jr-btn { background: var(--sage-50); border-color: var(--sage-200); }
+.jr-btn.on { background: var(--forest-800); border-color: var(--forest-800); }
+.ic-card { background: var(--sage-50); border-color: var(--sage-200); }
+.ic-card.on { border-color: var(--forest-800); box-shadow: 3px 3px 0 var(--sage-100); }
+
+/* Contact: its own soft sage band, edge to edge */
+#contact.contact { background: var(--sage-100); box-shadow: 0 0 0 100vmax var(--sage-100); clip-path: inset(0 -100vmax); padding-bottom: 96px; margin-top: 64px; }
+.btn { background: var(--forest-800); border-color: var(--forest-800); }
+.btn.ghost { background: transparent; color: var(--forest-800); border-color: var(--sage-400); }
+.btn.ghost:hover { background: var(--sage-50); }
+.foot { margin-top: 0; border-top-color: var(--sage-200); color: var(--muted); }
+
+/* Workflow view (opens from a project card) */
+.wf-k { background: var(--sage-100); color: var(--forest-800); }
+.wf-count { background: var(--sage-100); color: var(--forest-800); }
+.results strong { color: var(--forest-800); }
+.problem { background: var(--sage-50); }
+
+/* ================= Projects: rainforest green scroll breaker ================= */
+#lists.band-dark[data-tone="rainforest"] {
+  --band-bg: #163a2b;                 /* rainforest dark green */
+  --sage: 163, 177, 138;              /* sage #a3b18a, used for the grid */
+  --glow-rgb: 168, 214, 182;          /* soft mint-sage hover glow */
+  --band-ink: #f1f4ee;
+  --band-accent: #bcdcc5;
+  --chip-bg: rgba(163, 177, 138, .14);
+  --chip-line: rgba(163, 177, 138, .38);
+  margin-top: 24px;
+  padding: 168px 0 160px;
+}
+/* the band's colour itself blends from the page cream into rainforest green (eased, ~360px each end),
+   so the in-between shades stay green instead of going grey */
+#lists.band-dark[data-tone="rainforest"] { background: linear-gradient(to bottom, color-mix(in oklab, var(--band-bg) 0%, var(--bg)) 0px, color-mix(in oklab, var(--band-bg) 3%, var(--bg)) 40px, color-mix(in oklab, var(--band-bg) 10%, var(--bg)) 79px, color-mix(in oklab, var(--band-bg) 24%, var(--bg)) 130px, color-mix(in oklab, var(--band-bg) 50%, var(--bg)) 180px, color-mix(in oklab, var(--band-bg) 76%, var(--bg)) 230px, color-mix(in oklab, var(--band-bg) 90%, var(--bg)) 281px, color-mix(in oklab, var(--band-bg) 97%, var(--bg)) 320px, color-mix(in oklab, var(--band-bg) 100%, var(--bg)) 360px, color-mix(in oklab, var(--band-bg) 100%, var(--bg)) calc(100% - 360px), color-mix(in oklab, var(--band-bg) 97%, var(--bg)) calc(100% - 320px), color-mix(in oklab, var(--band-bg) 90%, var(--bg)) calc(100% - 281px), color-mix(in oklab, var(--band-bg) 76%, var(--bg)) calc(100% - 230px), color-mix(in oklab, var(--band-bg) 50%, var(--bg)) calc(100% - 180px), color-mix(in oklab, var(--band-bg) 24%, var(--bg)) calc(100% - 130px), color-mix(in oklab, var(--band-bg) 10%, var(--bg)) calc(100% - 79px), color-mix(in oklab, var(--band-bg) 3%, var(--bg)) calc(100% - 40px), color-mix(in oklab, var(--band-bg) 0%, var(--bg)) calc(100% - 0px)); padding: 270px 0 260px; margin-top: 0; }
+#lists.band-dark[data-tone="rainforest"]::after,
+#lists.band-dark[data-tone="rainforest"]::before {
+  opacity: 1 !important;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0.03) 40px, rgba(0,0,0,0.1) 79px, rgba(0,0,0,0.24) 130px, rgba(0,0,0,0.5) 180px, rgba(0,0,0,0.76) 230px, rgba(0,0,0,0.9) 281px, rgba(0,0,0,0.97) 320px, rgba(0,0,0,1) 360px, rgba(0,0,0,1) calc(100% - 360px), rgba(0,0,0,0.97) calc(100% - 320px), rgba(0,0,0,0.9) calc(100% - 281px), rgba(0,0,0,0.76) calc(100% - 230px), rgba(0,0,0,0.5) calc(100% - 180px), rgba(0,0,0,0.24) calc(100% - 130px), rgba(0,0,0,0.1) calc(100% - 79px), rgba(0,0,0,0.03) calc(100% - 40px), rgba(0,0,0,0) calc(100% - 0px));
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0.03) 40px, rgba(0,0,0,0.1) 79px, rgba(0,0,0,0.24) 130px, rgba(0,0,0,0.5) 180px, rgba(0,0,0,0.76) 230px, rgba(0,0,0,0.9) 281px, rgba(0,0,0,0.97) 320px, rgba(0,0,0,1) 360px, rgba(0,0,0,1) calc(100% - 360px), rgba(0,0,0,0.97) calc(100% - 320px), rgba(0,0,0,0.9) calc(100% - 281px), rgba(0,0,0,0.76) calc(100% - 230px), rgba(0,0,0,0.5) calc(100% - 180px), rgba(0,0,0,0.24) calc(100% - 130px), rgba(0,0,0,0.1) calc(100% - 79px), rgba(0,0,0,0.03) calc(100% - 40px), rgba(0,0,0,0) calc(100% - 0px));
+}
+/* glows only (the base colour now lives on the section itself) */
+#lists.band-dark[data-tone="rainforest"]::after {
+  background:
+    radial-gradient(1000px 460px at 85% 30%, rgba(120, 190, 150, .16), transparent 60%),
+    radial-gradient(800px 420px at 0% 75%, rgba(4, 18, 10, .4), transparent 62%);
+}
+#lists.band-dark[data-tone="rainforest"]::before {
+  background-image: linear-gradient(rgba(var(--sage), .2) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--sage), .2) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+@media (max-width: 640px) {
+  #lists.band-dark[data-tone="rainforest"] { background: linear-gradient(to bottom, color-mix(in oklab, var(--band-bg) 0%, var(--bg)) 0px, color-mix(in oklab, var(--band-bg) 3%, var(--bg)) 24px, color-mix(in oklab, var(--band-bg) 10%, var(--bg)) 48px, color-mix(in oklab, var(--band-bg) 24%, var(--bg)) 79px, color-mix(in oklab, var(--band-bg) 50%, var(--bg)) 110px, color-mix(in oklab, var(--band-bg) 76%, var(--bg)) 141px, color-mix(in oklab, var(--band-bg) 90%, var(--bg)) 172px, color-mix(in oklab, var(--band-bg) 97%, var(--bg)) 196px, color-mix(in oklab, var(--band-bg) 100%, var(--bg)) 220px, color-mix(in oklab, var(--band-bg) 100%, var(--bg)) calc(100% - 220px), color-mix(in oklab, var(--band-bg) 97%, var(--bg)) calc(100% - 196px), color-mix(in oklab, var(--band-bg) 90%, var(--bg)) calc(100% - 172px), color-mix(in oklab, var(--band-bg) 76%, var(--bg)) calc(100% - 141px), color-mix(in oklab, var(--band-bg) 50%, var(--bg)) calc(100% - 110px), color-mix(in oklab, var(--band-bg) 24%, var(--bg)) calc(100% - 79px), color-mix(in oklab, var(--band-bg) 10%, var(--bg)) calc(100% - 48px), color-mix(in oklab, var(--band-bg) 3%, var(--bg)) calc(100% - 24px), color-mix(in oklab, var(--band-bg) 0%, var(--bg)) calc(100% - 0px)); padding: 170px 0 160px; }
+  #lists.band-dark[data-tone="rainforest"]::after, #lists.band-dark[data-tone="rainforest"]::before {
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0.03) 24px, rgba(0,0,0,0.1) 48px, rgba(0,0,0,0.24) 79px, rgba(0,0,0,0.5) 110px, rgba(0,0,0,0.76) 141px, rgba(0,0,0,0.9) 172px, rgba(0,0,0,0.97) 196px, rgba(0,0,0,1) 220px, rgba(0,0,0,1) calc(100% - 220px), rgba(0,0,0,0.97) calc(100% - 196px), rgba(0,0,0,0.9) calc(100% - 172px), rgba(0,0,0,0.76) calc(100% - 141px), rgba(0,0,0,0.5) calc(100% - 110px), rgba(0,0,0,0.24) calc(100% - 79px), rgba(0,0,0,0.1) calc(100% - 48px), rgba(0,0,0,0.03) calc(100% - 24px), rgba(0,0,0,0) calc(100% - 0px));
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0.03) 24px, rgba(0,0,0,0.1) 48px, rgba(0,0,0,0.24) 79px, rgba(0,0,0,0.5) 110px, rgba(0,0,0,0.76) 141px, rgba(0,0,0,0.9) 172px, rgba(0,0,0,0.97) 196px, rgba(0,0,0,1) 220px, rgba(0,0,0,1) calc(100% - 220px), rgba(0,0,0,0.97) calc(100% - 196px), rgba(0,0,0,0.9) calc(100% - 172px), rgba(0,0,0,0.76) calc(100% - 141px), rgba(0,0,0,0.5) calc(100% - 110px), rgba(0,0,0,0.24) calc(100% - 79px), rgba(0,0,0,0.1) calc(100% - 48px), rgba(0,0,0,0.03) calc(100% - 24px), rgba(0,0,0,0) calc(100% - 0px));
+  }
+}
+#lists[data-tone="rainforest"] .eyebrow { color: var(--band-accent); }
+#lists[data-tone="rainforest"] h2 { color: var(--band-ink); font-size: clamp(36px, 4.6vw, 56px); }
+#lists[data-tone="rainforest"] .chip, #lists[data-tone="rainforest"] .arrow, #lists[data-tone="rainforest"] .card-mode {
+  color: var(--band-ink); background: var(--chip-bg); border-color: var(--chip-line);
+}
+#lists[data-tone="rainforest"] .chip[aria-pressed="true"] { background: var(--band-accent); color: var(--forest-900); border-color: transparent; }
+#lists[data-tone="rainforest"] .card-mode button[aria-pressed="true"] { background: var(--band-accent); color: var(--forest-900); }
+#lists[data-tone="rainforest"] .arrow:hover { background: var(--band-accent); color: var(--forest-900); }
+#lists[data-tone="rainforest"] .pcard { box-shadow: 0 1px 0 rgba(255, 255, 255, .08) inset, 0 18px 36px -18px rgba(3, 14, 8, .7); }
+#lists[data-tone="rainforest"] .pcard:hover { border-color: rgba(var(--glow-rgb), .8);
+  box-shadow: 0 28px 60px -22px rgba(3, 14, 8, .8), 0 0 50px -8px rgba(var(--glow-rgb), .55); }
+#lists[data-tone="rainforest"] .pc-cta { background: var(--forest-900); }
+#lists[data-tone="rainforest"] .pc-cta:hover { background: var(--forest-800); }
+#lists[data-tone="rainforest"] .pc-stat { color: var(--sage-700); border-left-color: var(--forest-800); }
+#lists[data-tone="rainforest"] .pc-tag { color: var(--sage-700); background: var(--sage-100); }
+#lists[data-tone="rainforest"].dark-cards .pcard { background: #10291e; border-color: rgba(var(--sage), .25); }
+#lists[data-tone="rainforest"].dark-cards .pc-thumb { background: #0d2219; }
+#lists[data-tone="rainforest"].dark-cards .pc-tag { color: var(--band-accent); background: rgba(var(--sage), .16); }
+#lists[data-tone="rainforest"].dark-cards .pc-title { color: var(--band-ink); }
+#lists[data-tone="rainforest"].dark-cards .pc-desc { color: #a9c0b0; }
+#lists[data-tone="rainforest"].dark-cards .pc-stat { color: var(--band-accent); border-left-color: var(--band-accent); }
+#lists[data-tone="rainforest"].dark-cards .pc-cta { background: var(--band-accent); color: var(--forest-900); }
